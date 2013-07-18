@@ -1,0 +1,23 @@
+This is an example of how to invoke a remote service running in a
+distributed space. It consists of a simple remote service a
+stand-alone caller.
+
+To build the example:
+
+    1.  Set the JSHOMEDIR environment variable to the GigaSpaces
+        installation directory.
+    2.  Run 'ant build' in the base directory.
+
+To run the example:
+
+    1.  Modify the bin/gs-setup.sh script to reflect the correct
+        GigaSpaces installation directory.
+    2.  Modify the bin/start-infrastructure.csh script to specify the
+        desired number of Grid Service Containers to run.
+    3.  Run bin/start-infrastructure.csh.
+    4.  Modify the bin/deploy.csh script to specify the desired
+        GigaSpaces topology.
+    5.  Deploy the example with bin/deploy.sh.
+    6.  Run the caller with bin/call.sh.
+
+To monitor the run, start the GigaSpaces GUI with bin/start-ui.sh.

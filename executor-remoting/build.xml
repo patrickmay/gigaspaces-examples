@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+
+<project name="executor-remoting-example"
+         default="usage"
+         basedir=".">
+
+  <property environment="env"/>
+  <property file="${basedir}/build.properties"/>
+
+  <property name="lib" value="${basedir}/lib"/>
+
+  <property name="shared.src" value="${basedir}/shared"/>
+  <property name="shared.classes" value="${basedir}/classes"/>
+  <property name="shared.jar" value="${lib}/shared.jar"/>
+
+  <property name="caller.src" value="${basedir}/caller"/>
+  <property name="caller.classes" value="${basedir}/classes"/>
+  <property name="caller.fullname"
+            value="com.gigaspaces.examples.executor.client.Student"/>
+  <property name="caller.manifest" value="${basedir}/caller.manifest"/>
+  <property name="caller.jar" value="${lib}/caller.jar"/>
+
+  <property name="build.deploy.base" value="${basedir}/deploy"/>
+
+  <!-- The executor-space deployment holds the remote executor service. -->
+
+  <property name="executorspace.src" value="${basedir}/executor-space"/>
+  <property name="executorspace.pu" value="${executorspace.src}/pu.xml"/>
+  <property name="executorspace.deploy"
+            value="${build.deploy.base}/executor-space"/>
+  <property name="executorspace.deploy.shared"
+            value="${executorspace.deploy}/lib"/>
+  <property name="executorspace.deploy.spring"
+            value="${executorspace.deploy}/META-INF/spring"/>
+  <property name="executorspace.deploy.jar" value="${lib}/executor-space.jar"/>
+
+  <property name="executor.src" value="${basedir}/executor"/>
+
+  <path id="master-classpath">
+    <fileset dir="${gshome}/lib/required">
+      <include name="*.jar"/>
+    </fileset>
+
+    <pathelement path="${shared.classes}"/>
+  </path>
+
+  <target name="usage">
+    <echo level="info">
+Available targets are:
+  build    Build project in current directory.
+  clean    Remove all generated files and directories.
+  rebuild  Clean and build.
+
+  Project name = ${ant.project.name}
+  GigaSpaces home = ${gshome}
+  Java home = ${env.JAVA_HOME}
+    </echo>
+  </target>
+
+  <target name="make-build-dirs">
+    <mkdir dir="${shared.classes}"/>
+    <mkdir dir="${lib}"/>
+    <mkdir dir="${build.deploy.base}"/>
+
+    <mkdir dir="${executorspace.deploy}"/>
+    <mkdir dir="${executorspace.deploy.shared}"/>
+    <mkdir dir="${executorspace.deploy.spring}"/>
+  </target>
+
+  <target name="make-manifest">
+    <echo file="${caller.manifest}" append="false">
+Main-Class: ${caller.fullname}
+Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${gshome}/lib/required/commons-logging-1.1.1.jar ${gshome}/lib/required/gs-openspaces.jar ${gshome}/lib/required/gs-runtime.jar ${gshome}/lib/required/spring-aop-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-asm-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-aspects-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-beans-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-support-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-core-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-expression-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-tx-3.1.3.RELEASE.jar
+    </echo>
+    <!--
+      Clean up the output from echo while keeping the above lines easy
+      to edit.
+    -->
+    <replaceregexp file="${caller.manifest}"
+                   flags="m"
+                   match="^\n"
+                   replace=""/>
+    <replaceregexp file="${caller.manifest}"
+                   flags="gm"
+                   byline="true"
+                   match="^\s+"
+                   replace=""/>
+  </target>
+
+  <target name="build" depends="make-build-dirs,make-manifest">
+
+    <!-- Build the shared classes. -->
+
+    <javac srcdir="${shared.src}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <javac srcdir="${shared.src}" destdir="${shared.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <jar basedir="${shared.classes}" jarfile="${shared.jar}"/>
+
+    <!-- Build the caller. -->
+
+    <javac srcdir="${caller.src}" destdir="${caller.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <jar basedir="${caller.classes}"
+         manifest="${caller.manifest}"
+         jarfile="${caller.jar}"/>
+
+    <!-- Bundle up the executor-space remote service. -->
+
+    <javac srcdir="${executor.src}" destdir="${executorspace.deploy}">
+      <classpath refid="master-classpath"/>
+    </javac>
+
+    <copy file="${shared.jar}" todir="${executorspace.deploy.shared}"/>
+    <copy file="${executorspace.pu}" todir="${executorspace.deploy.spring}"/>
+    <jar basedir="${executorspace.deploy}"
+         jarfile="${executorspace.deploy.jar}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.deploy.base}" quiet="true"/>
+    <delete dir="${lib}" quiet="true"/>
+    <delete dir="${shared.classes}" quiet="true"/>
+    <delete dir="${caller.classes}" quiet="true"/>
+    <delete file="${caller.manifest}" quiet="true"/>
+
+    <delete quiet="true">
+      <fileset dir="." includes="**/*.class"/>
+    </delete>
+  </target>
+
+  <target name="rebuild" depends="clean,build"/>
+</project>
