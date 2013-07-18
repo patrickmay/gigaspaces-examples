@@ -1,6 +1,5 @@
 /**
- * Response is a simple space Entry representing work that has been
- * done.
+ * Response represents work that has been done.
  *
  * @author Patrick May (patrick.may@gigaspaces.com)
  * @author &copy; 2013 GigaSpaces Technologies Inc.  All rights reserved.

@@ -1,6 +1,5 @@
 /**
- * Request is a simple space Entry representing a request for work to be
- * done.
+ * Request is a request for work to be done.
  *
  * @author Patrick May (patrick.may@gigaspaces.com)
  * @author &copy; 2013 GigaSpaces Technologies Inc.  All rights reserved.
