@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gigaspaces-mapping PUBLIC "-//GIGASPACES//DTD GS//EN" "http://www.gigaspaces.com/dtd/9_5/gigaspaces-metadata.dtd">
+<gigaspaces-mapping>
+  <class name="com.gigaspaces.examples.stateful.shared.Response">
+    <id name="id" auto-generate="false"/>
+    <routing name="id"/>
+  </class>
+</gigaspaces-mapping>

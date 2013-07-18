@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+
+<project name="stateful-worker-example"
+         default="usage"
+         basedir=".">
+
+  <property environment="env"/>
+  <property file="${basedir}/build.properties"/>
+
+  <property name="lib" value="${basedir}/lib"/>
+
+  <property name="shared.src" value="${basedir}/shared"/>
+  <property name="shared.classes" value="${basedir}/classes"/>
+  <property name="shared.jar" value="${lib}/shared.jar"/>
+
+  <property name="feeder.src" value="${basedir}/feeder"/>
+  <property name="feeder.classes" value="${basedir}/classes"/>
+  <property name="feeder.fullname"
+            value="com.gigaspaces.examples.stateful.feeder.Feeder"/>
+  <property name="feeder.manifest" value="${basedir}/feeder.manifest"/>
+  <property name="feeder.jar" value="${lib}/feeder.jar"/>
+
+  <property name="build.deploy.base" value="${basedir}/deploy"/>
+
+  <!-- The worker-space deployment holds the stateful worker service. -->
+
+  <property name="workerspace.src" value="${basedir}/worker-space"/>
+  <property name="workerspace.pu" value="${workerspace.src}/pu.xml"/>
+  <property name="workerspace.deploy"
+            value="${build.deploy.base}/worker-space"/>
+  <property name="workerspace.deploy.shared"
+            value="${workerspace.deploy}/lib"/>
+  <property name="workerspace.deploy.spring"
+            value="${workerspace.deploy}/META-INF/spring"/>
+  <property name="workerspace.deploy.jar" value="${lib}/worker-space.jar"/>
+
+  <property name="worker.src" value="${basedir}/worker"/>
+
+  <path id="master-classpath">
+    <fileset dir="${gshome}/lib/required">
+      <include name="*.jar"/>
+    </fileset>
+
+    <pathelement path="${shared.classes}"/>
+  </path>
+
+  <target name="usage">
+    <echo level="info">
+Available targets are:
+  build    Build project in current directory.
+  clean    Remove all generated files and directories.
+  rebuild  Clean and build.
+
+  Project name = ${ant.project.name}
+  GigaSpaces home = ${gshome}
+  Java home = ${env.JAVA_HOME}
+    </echo>
+  </target>
+
+  <target name="make-build-dirs">
+    <mkdir dir="${shared.classes}"/>
+    <mkdir dir="${lib}"/>
+    <mkdir dir="${build.deploy.base}"/>
+
+    <mkdir dir="${workerspace.deploy}"/>
+    <mkdir dir="${workerspace.deploy.shared}"/>
+    <mkdir dir="${workerspace.deploy.spring}"/>
+  </target>
+
+  <target name="make-manifest">
+    <echo file="${feeder.manifest}" append="false">
+Main-Class: ${feeder.fullname}
+Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${gshome}/lib/required/commons-logging-1.1.1.jar ${gshome}/lib/required/gs-openspaces.jar ${gshome}/lib/required/gs-runtime.jar ${gshome}/lib/required/spring-aop-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-asm-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-aspects-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-beans-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-support-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-core-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-expression-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-tx-3.1.3.RELEASE.jar
+    </echo>
+    <!--
+      Clean up the output from echo while keeping the above lines easy
+      to edit.
+    -->
+    <replaceregexp file="${feeder.manifest}"
+                   flags="m"
+                   match="^\n"
+                   replace=""/>
+    <replaceregexp file="${feeder.manifest}"
+                   flags="gm"
+                   byline="true"
+                   match="^\s+"
+                   replace=""/>
+  </target>
+
+  <target name="build" depends="make-build-dirs,make-manifest">
+
+    <!-- Build the shared classes. -->
+
+    <javac srcdir="${shared.src}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <javac srcdir="${shared.src}" destdir="${shared.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <copy file="${shared.src}/Request.gs.xml"
+          todir="${shared.classes}/com/gigaspaces/examples/stateful/shared"/>
+    <copy file="${shared.src}/Response.gs.xml"
+          todir="${shared.classes}/com/gigaspaces/examples/stateful/shared"/>
+    <jar basedir="${shared.classes}" jarfile="${shared.jar}"/>
+
+    <!-- Build the feeder. -->
+
+    <javac srcdir="${feeder.src}" destdir="${feeder.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <jar basedir="${feeder.classes}"
+         manifest="${feeder.manifest}"
+         jarfile="${feeder.jar}"/>
+
+    <!-- Bundle up the worker-space worker. -->
+
+    <javac srcdir="${worker.src}" destdir="${workerspace.deploy}">
+      <classpath refid="master-classpath"/>
+    </javac>
+
+    <copy file="${shared.jar}" todir="${workerspace.deploy.shared}"/>
+    <copy file="${workerspace.pu}" todir="${workerspace.deploy.spring}"/>
+    <jar basedir="${workerspace.deploy}" jarfile="${workerspace.deploy.jar}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.deploy.base}" quiet="true"/>
+    <delete dir="${lib}" quiet="true"/>
+    <delete dir="${shared.classes}" quiet="true"/>
+    <delete dir="${feeder.classes}" quiet="true"/>
+    <delete file="${feeder.manifest}" quiet="true"/>
+
+    <delete quiet="true">
+      <fileset dir="." includes="**/*.class"/>
+    </delete>
+  </target>
+
+  <target name="rebuild" depends="clean,build"/>
+</project>
