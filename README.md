@@ -48,6 +48,15 @@ In most of the examples, the source code for the services and shared classes is 
 
 This approach is a little unusual, but it makes it easier to browse the code through GitHub.
 
+####Running
+Each example uses a unique space name and a unique lookup group name.
+These are set in the `bin/gs-setup.sh` script.  The `bin/start-ui.sh`
+script uses these setting to allow the GigaSpaces GUI to monitor the
+example.
+
+####Shutting Down
+The easiest way to shut down the example is to use the GigaSpaces GUI to identify the process ID of the GigaSpaces Agent (GSA) and `kill` it from the command line.  `killall java` also works, but is a bit more dangerous.
+
 
 ###Contact
 Questions and comments can be sent to patrick.may@mac.com.

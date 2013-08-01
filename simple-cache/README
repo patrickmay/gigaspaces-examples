@@ -1,0 +1,36 @@
+This is an example of how to use GigaSpaces as a simple cache.  It is
+probably the simplest possible working GigaSpaces configuration.
+
+To build the example:
+
+    1.  Set the JSHOMEDIR environment variable to the GigaSpaces
+        installation directory.
+    2.  Run 'ant build' in the base directory.
+
+To run the example:
+
+    1.  Modify the bin/gs-setup.sh script to reflect the correct
+        GigaSpaces installation directory.
+    2.  Modify the bin/start-infrastructure.sh script to specify the
+        desired number of Grid Service Containers to run.
+    3.  Run bin/start-infrastructure.sh.
+    4.  Modify the bin/deploy.sh script to specify the desired
+        GigaSpaces topology.
+    5.  Deploy the example with bin/deploy.sh.
+    6.  Run the feeder with bin/feed.sh.
+        By default this will write a total of 100,000 request objects
+        one at a time from five threads.
+
+To monitor the run, start the GigaSpaces GUI with bin/start-ui.sh.
+
+To demonstrate scalability, deploy on different sized clusters or with
+additional workers spread over more machines and compare the results.
+
+Notes:
+This example uses only the simplest write(), read(), and take()
+methods of the GigaSpace class.  The readById(), takeById(), and any
+of the *Multiple() methods would be more efficient.
+
+The Swag.gs.xml file is used instead of annotations to configure the
+Swag class to be written to and read from the space.  The choice of
+which approach to use is up to each project's coding standards.

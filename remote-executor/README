@@ -1,5 +1,5 @@
 This is an example of how to invoke a remote service running in a
-distributed space. It consists of a simple remote service a
+distributed space. It consists of a simple remote service and a
 stand-alone caller.
 
 To build the example:

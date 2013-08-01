@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+
+<project name="simple-cache-example"
+         default="usage"
+         basedir=".">
+
+  <property environment="env"/>
+  <property file="${basedir}/build.properties"/>
+
+  <property name="lib" value="${basedir}/lib"/>
+
+  <property name="cacher.src" value="${basedir}/cacher"/>
+  <property name="cacher.classes" value="${basedir}/classes"/>
+  <property name="cacher.fullname"
+            value="com.gigaspaces.examples.cache.cacher.Cacher"/>
+  <property name="cacher.manifest" value="${basedir}/cacher.manifest"/>
+  <property name="cacher.jar" value="${lib}/cacher.jar"/>
+
+  <property name="build.deploy.base" value="${basedir}/deploy"/>
+
+  <path id="master-classpath">
+    <fileset dir="${gshome}/lib/required">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="usage">
+    <echo level="info">
+Available targets are:
+  build    Build project in current directory.
+  clean    Remove all generated files and directories.
+  rebuild  Clean and build.
+
+  Project name = ${ant.project.name}
+  GigaSpaces home = ${gshome}
+  Java home = ${env.JAVA_HOME}
+    </echo>
+  </target>
+
+  <target name="make-build-dirs">
+    <mkdir dir="${lib}"/>
+    <mkdir dir="${cacher.classes}"/>
+    <mkdir dir="${build.deploy.base}"/>
+  </target>
+
+  <target name="make-manifest">
+    <echo file="${cacher.manifest}" append="false">
+Main-Class: ${cacher.fullname}
+Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${gshome}/lib/required/commons-logging-1.1.1.jar ${gshome}/lib/required/gs-openspaces.jar ${gshome}/lib/required/gs-runtime.jar ${gshome}/lib/required/spring-aop-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-asm-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-aspects-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-beans-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-support-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-core-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-expression-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-tx-3.1.3.RELEASE.jar
+    </echo>
+    <!--
+      Clean up the output from echo while keeping the above lines easy
+      to edit.
+    -->
+    <replaceregexp file="${cacher.manifest}"
+                   flags="m"
+                   match="^\n"
+                   replace=""/>
+    <replaceregexp file="${cacher.manifest}"
+                   flags="gm"
+                   byline="true"
+                   match="^\s+"
+                   replace=""/>
+  </target>
+
+  <target name="build" depends="make-build-dirs,make-manifest">
+
+    <!-- Build the cacher. -->
+
+    <javac srcdir="${cacher.src}" destdir="${cacher.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <copy file="${cacher.src}/Swag.gs.xml"
+          todir="${cacher.classes}/com/gigaspaces/examples/cache/cacher"/>
+    <jar basedir="${cacher.classes}"
+         manifest="${cacher.manifest}"
+         jarfile="${cacher.jar}"/>
+
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.deploy.base}" quiet="true"/>
+    <delete dir="${lib}" quiet="true"/>
+    <delete dir="${cacher.classes}" quiet="true"/>
+    <delete file="${cacher.manifest}" quiet="true"/>
+
+    <delete quiet="true">
+      <fileset dir="." includes="**/*.class"/>
+    </delete>
+  </target>
+
+  <target name="rebuild" depends="clean,build"/>
+</project>

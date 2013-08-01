@@ -1,6 +1,6 @@
 /**
  * Feeder writes Request objects to a space.  The number of Requests to
- * write and the number of simulaneous threads is specified on the
+ * write and the number of simultaneous threads is specified on the
  * command line.
  *
  * @author Patrick May (patrick.may@gigaspaces.com)
