@@ -11,10 +11,10 @@ To run the example:
 
     1.  Modify the bin/gs-setup.sh script to reflect the correct
         GigaSpaces installation directory.
-    2.  Modify the bin/start-infrastructure.csh script to specify the
+    2.  Modify the bin/start-infrastructure.sh script to specify the
         desired number of Grid Service Containers to run.
-    3.  Run bin/start-infrastructure.csh.
-    4.  Modify the bin/deploy.csh script to specify the desired
+    3.  Run bin/start-infrastructure.sh.
+    4.  Modify the bin/deploy.sh script to specify the desired
         GigaSpaces topology.
     5.  Deploy the example with bin/deploy.sh.
     6.  Run the feeder with bin/feed.sh.
