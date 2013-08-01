@@ -3,7 +3,7 @@ This is a collection of GigaSpaces examples for common use cases.
 
 
 ###Environment
-These examples have been developed and tested under version 9.6 on Mac OS X 10.8.4 with Java 7.
+These examples have been developed and tested under GigaSpaces version 9.6 on Mac OS X 10.8.4 with Java 7.
 
 
 ###Examples
@@ -29,11 +29,11 @@ This example shows how to use the GigaSpaces' mirror service to reliably and asy
 ###Examples Structure
 
 ####Files and Directories
-Each of the example subdirectories has a common structure:
+Each of the example directories has a common structure:
 - `README` describes the example and provides detailed instructions on how to build and run it.
 - `build.properties` usually just extracts the GigaSpaces home
 environment variable, which should be set to `$JSHOMEDIR`, for use by `ant`.
-- `build.xml` generally provides the `ant` targets `build`, `clean`, and `rebuild`.
+- `build.xml` provides the `ant` targets `build`, `clean`, and `rebuild`.
 - `bin` contains shell scripts for starting a GigaSpaces infrastructure and deploying the example.
 - `shared` contains classes that are used by more than one other component of the example.
 
