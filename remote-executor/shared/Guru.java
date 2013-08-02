@@ -1,8 +1,8 @@
 /**
  * Guru is an interface for a remote service.
  *
- * @author Patrick May (patrick.may@gigaspaces.com)
- * @author &copy; 2013 GigaSpaces Technologies Inc.  All rights reserved.
+ * @author Patrick May (patrick.may@mac.com)
+ * @author &copy; 2013 Patrick May
  * @version 1
  */
 

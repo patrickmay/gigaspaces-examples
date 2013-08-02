@@ -1,8 +1,8 @@
 /**
  * Request is a request for work to be done.
  *
- * @author Patrick May (patrick.may@gigaspaces.com)
- * @author &copy; 2013 GigaSpaces Technologies Inc.  All rights reserved.
+ * @author Patrick May (patrick.may@mac.com)
+ * @author &copy; 2013 Patrick May
  * @version 1
  */
 

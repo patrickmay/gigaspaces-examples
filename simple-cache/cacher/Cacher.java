@@ -2,8 +2,8 @@
  * Cacher writes Swag objects to a space and reads them back.  The
  * number of objects to write is specified on the command line.
  *
- * @author Patrick May (patrick.may@gigaspaces.com)
- * @author &copy; 2013 GigaSpaces Technologies Inc.  All rights reserved.
+ * @author Patrick May (patrick.may@mac.com)
+ * @author &copy; 2013 Patrick May
  * @version 1
  */
 
