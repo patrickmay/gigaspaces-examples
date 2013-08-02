@@ -90,6 +90,7 @@ public class Cacher implements Runnable
       {
       for (long i = 0;i < swagCount_;i++)
         {
+        template.setId(new Long(i));
         swag = gigaSpace().read(template);
         if (swag == null)
           {
@@ -120,6 +121,7 @@ public class Cacher implements Runnable
       {
       for (long i = 0;i < swagCount_;i++)
         {
+        template.setId(new Long(i));
         swag = gigaSpace().take(template);
         if (swag == null)
           {

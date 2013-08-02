@@ -1,5 +1,16 @@
 This is an example of how to use GigaSpaces as a simple cache.  It is
-probably the simplest possible working GigaSpaces configuration.
+probably the simplest possible working GigaSpaces configuration.  When
+run, the Cacher class writes some Swag objects into the space,
+retrieves them by ID, and then removes them by ID.
+
+This example uses only the simplest write(), read(), and take()
+methods of the GigaSpace interface.  The readById(), takeById(), and
+any of the *Multiple() methods would be more efficient.
+
+The Swag.gs.xml file is used instead of annotations to configure the
+Swag class to be written to and read from the space.  An example of
+using annotations is in the file Swag.java.annotated.  The choice of
+which approach to use is up to each project's coding standards.
 
 To build the example:
 
@@ -17,20 +28,11 @@ To run the example:
     4.  Modify the bin/deploy.sh script to specify the desired
         GigaSpaces topology.
     5.  Deploy the example with bin/deploy.sh.
-    6.  Run the feeder with bin/feed.sh.
-        By default this will write a total of 100,000 request objects
-        one at a time from five threads.
+    6.  Run the cacher with bin/cache.sh.
+        By default this will write, retrieve, and remove 100 Swag
+        objects to and from the space.
 
 To monitor the run, start the GigaSpaces GUI with bin/start-ui.sh.
 
 To demonstrate scalability, deploy on different sized clusters or with
 additional workers spread over more machines and compare the results.
-
-Notes:
-This example uses only the simplest write(), read(), and take()
-methods of the GigaSpace class.  The readById(), takeById(), and any
-of the *Multiple() methods would be more efficient.
-
-The Swag.gs.xml file is used instead of annotations to configure the
-Swag class to be written to and read from the space.  The choice of
-which approach to use is up to each project's coding standards.
