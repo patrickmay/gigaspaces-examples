@@ -38,7 +38,7 @@
   <!--
       Create the space proxy
   -->
-  <os-core:space id="space" url="/./executor-remoting-space"/>
+  <os-core:space id="space" url="/./remote-executor-space"/>
 
   <os-core:distributed-tx-manager id="transaction-manager"/>
 
@@ -54,6 +54,7 @@
 
   <os-remoting:service-exporter id="serviceExporter">
     <os-remoting:service ref="remote-executor"/>
+    <!-- Additional remote services go in this block -->
   </os-remoting:service-exporter>
 
 </beans>

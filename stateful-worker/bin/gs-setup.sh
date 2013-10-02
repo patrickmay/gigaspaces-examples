@@ -2,7 +2,10 @@
 
 # GigaSpaces XAP setup
 
-export JSHOMEDIR=/usr/local/gigaspaces-xap-premium-9.5.2-ga
+DEFAULT_JSHOMEDIR=/usr/local/gigaspaces-xap-premium-9.6.0-ga
+if [ -z "$JSHOMEDIR" ]; then
+  export JSHOMEDIR=$DEFAULT_JSHOMEDIR
+fi  
 export GS_HOME=${JSHOMEDIR}
 
 export PATH=${JSHOMEDIR}/bin:${PATH}

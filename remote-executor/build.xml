@@ -35,6 +35,12 @@
   <property name="executorspace.deploy.jar" value="${lib}/executor-space.jar"/>
 
   <property name="executor.src" value="${basedir}/executor"/>
+  <property name="executor.pu" value="${executor.src}/pu.xml"/>
+  <property name="executor.deploy" value="${build.deploy.base}/executor"/>
+  <property name="executor.deploy.shared" value="${executor.deploy}/lib"/>
+  <property name="executor.deploy.spring"
+            value="${executor.deploy}/META-INF/spring"/>
+  <property name="executor.deploy.jar" value="${lib}/executor.jar"/>
 
   <path id="master-classpath">
     <fileset dir="${gshome}/lib/required">
@@ -61,6 +67,10 @@ Available targets are:
     <mkdir dir="${shared.classes}"/>
     <mkdir dir="${lib}"/>
     <mkdir dir="${build.deploy.base}"/>
+
+    <mkdir dir="${executor.deploy}"/>
+    <mkdir dir="${executor.deploy.shared}"/>
+    <mkdir dir="${executor.deploy.spring}"/>
 
     <mkdir dir="${executorspace.deploy}"/>
     <mkdir dir="${executorspace.deploy.shared}"/>
@@ -107,6 +117,15 @@ Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${
     <jar basedir="${caller.classes}"
          manifest="${caller.manifest}"
          jarfile="${caller.jar}"/>
+
+    <!-- Build the executor. -->
+
+    <javac srcdir="${executor.src}" destdir="${executor.deploy}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <copy file="${shared.jar}" todir="${executor.deploy.shared}"/>
+    <copy file="${executor.pu}" todir="${executor.deploy.spring}"/>
+    <jar basedir="${executor.deploy}" jarfile="${executor.deploy.jar}"/>
 
     <!-- Bundle up the executor-space remote service. -->
 

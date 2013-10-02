@@ -2,16 +2,19 @@
 
 # GigaSpaces XAP setup
 
-export JSHOMEDIR=/usr/local/gigaspaces-xap-premium-9.5.2-ga
+DEFAULT_JSHOMEDIR=/usr/local/gigaspaces-xap-premium-9.6.0-ga
+if [ -z "$JSHOMEDIR" ]; then
+  export JSHOMEDIR=$DEFAULT_JSHOMEDIR
+fi  
 export GS_HOME=${JSHOMEDIR}
 
 export PATH=${JSHOMEDIR}/bin:${PATH}
 
 export NIC_ADDR=localhost
 export LOOKUPLOCATORS=${NIC_ADDR}
-export LOOKUPGROUPS="executor-remoting-example"
+export LOOKUPGROUPS="remote-executor-example"
 
-export EXAMPLE_SPACE_NAME="executor-remoting-space"
+export EXAMPLE_SPACE_NAME="remote-executor-space"
 
 ${JSHOMEDIR}/bin/setenv.sh
 
