@@ -10,7 +10,7 @@ export GS_HOME=${JSHOMEDIR}
 
 export PATH=${JSHOMEDIR}/bin:${PATH}
 
-export NIC_ADDR=localhost
+export NIC_ADDR=127.0.0.1
 export LOOKUPLOCATORS=${NIC_ADDR}
 export LOOKUPGROUPS="simple-cache-example"
 

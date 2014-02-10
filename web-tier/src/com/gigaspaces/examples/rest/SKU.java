@@ -2,7 +2,7 @@
  * SKU is a very simplified example of a Stock Keeping Unit class.
  *
  * @author Patrick May (patrick.may@mac.com)
- * @author &copy; 2013 Patrick May
+ * @author &copy; 2014 Patrick May
  * @version 1
  */
 
@@ -21,6 +21,7 @@ public class SKU
   private String id;
   private String color;
   private String size;
+  private String description;
 
   /**
    * The default constructor for the SKU class.
@@ -33,11 +34,12 @@ public class SKU
   /**
    * The full constructor for the SKU class.
    */
-  public SKU(String id,String color,String size)
+  public SKU(String id,String color,String size,String description)
     {
     this.id = id;
     this.color = color;
     this.size = size;
+    this.description = description;
     }
 
 
@@ -55,17 +57,8 @@ public class SKU
   public void setSize(String size) { this.size = size; }
 
 
-  /**
-   * Create a random SKU object.
-   */
-  private static final String[] COLORS
-    = { "red", "blue", "green", "yellow", "white", "black", "orange", "purple" };
-  private static final String[] SIZES = { "XS", "S", "M", "L", "XL", "XXL" };
-  private static Random generator = new Random(System.currentTimeMillis());
-  public static SKU randomSKU()
-    {
-    return new SKU(Long.toString(Math.abs(generator.nextLong())),
-                   COLORS[generator.nextInt(COLORS.length)],
-                   SIZES[generator.nextInt(SIZES.length)]);
-    }
+  @SpaceIndex
+  public String getDescription() { return description; }
+  public void setDescription(String description)
+    { this.description = description; }
 }

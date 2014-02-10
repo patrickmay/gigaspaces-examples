@@ -5,4 +5,5 @@
 . `dirname $0`/gs-setup.sh
 
 java -jar `dirname $0`/../lib/cacher.jar \
-     "jini://*/*/${EXAMPLE_SPACE_NAME}?groups=${LOOKUPGROUPS}" 100
+     "jini://*/*/${EXAMPLE_SPACE_NAME}?groups=${LOOKUPGROUPS}" 10000
+
