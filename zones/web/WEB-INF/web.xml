@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+                             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+         version="2.4">
+
+  <display-name>REST API Example Application</display-name>
+  <description>
+    This is an example of how to implement a REST API with GigaSpaces XAP.
+  </description>
+
+  <servlet>
+    <servlet-name>SKUServlet</servlet-name>
+    <servlet-class>com.gigaspaces.examples.rest.SKUServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>SKUServlet</servlet-name>
+    <url-pattern>/v1/*</url-pattern>
+  </servlet-mapping>
+
+</web-app>

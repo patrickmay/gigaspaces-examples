@@ -1,0 +1,157 @@
+<?xml version="1.0"?>
+
+<project name="zones-example"
+         default="usage"
+         basedir=".">
+
+  <property environment="env"/>
+  <property file="${basedir}/build.properties"/>
+
+  <property name="lib" value="${basedir}/lib"/>
+
+  <property name="webdir" value="${basedir}/web"/>
+
+  <property name="rest-api.src" value="${basedir}/src"/>
+  <property name="rest-api.classes" value="${webdir}/WEB-INF/classes"/>
+  <property name="rest-api.lib" value="${webdir}/WEB-INF/lib"/>
+  <property name="rest-api.war" value="${lib}/rest-api.war"/>
+
+  <property name="feeder.src" value="${basedir}/src"/>
+  <property name="feeder.fullname"
+            value="com.gigaspaces.examples.rest.SKUFeeder"/>
+  <property name="feeder.manifest" value="${basedir}/feeder.manifest"/>
+  <property name="feeder.jar" value="${lib}/feeder.jar"/>
+
+  <property name="reader.src" value="${basedir}/src"/>
+  <property name="reader.fullname"
+            value="com.gigaspaces.examples.rest.SKUReader"/>
+  <property name="reader.manifest" value="${basedir}/reader.manifest"/>
+  <property name="reader.jar" value="${lib}/reader.jar"/>
+
+  <path id="master-classpath">
+    <fileset dir="${gshome}/lib/required">
+      <include name="*.jar"/>
+    </fileset>
+
+    <fileset dir="${lib}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="usage">
+    <echo level="info">
+Available targets are:
+  build    Build project in current directory.
+  clean    Remove all generated files and directories.
+  rebuild  Clean and build.
+
+  Project name = ${ant.project.name}
+  GigaSpaces home = ${gshome}
+  Java home = ${env.JAVA_HOME}
+    </echo>
+  </target>
+
+  <target name="make-build-dirs">
+    <mkdir dir="${rest-api.classes}"/>
+    <mkdir dir="${rest-api.lib}"/>
+  </target>
+
+  <!--
+      These targets are necessary to allow fixed paths in the manifest files.
+  -->
+  <pathconvert property="manifest.classpath"
+               refid="master-classpath"
+               pathsep=" "
+               dirsep="/"/>
+
+  <target name="make-feeder-manifest">
+    <echo file="${feeder.manifest}" append="false">
+Main-Class: ${feeder.fullname}
+Class-Path: ${manifest.classpath}
+    </echo>
+    <!--
+      Clean up the output from echo while keeping the above lines easy
+      to edit.
+    -->
+    <replaceregexp file="${feeder.manifest}"
+                   flags="m"
+                   match="^\n"
+                   replace=""/>
+    <replaceregexp file="${feeder.manifest}"
+                   flags="gm"
+                   byline="true"
+                   match="^\s+"
+                   replace=""/>
+  </target>
+
+  <target name="make-reader-manifest">
+    <echo file="${reader.manifest}" append="false">
+Main-Class: ${reader.fullname}
+Class-Path: ${manifest.classpath}
+    </echo>
+    <!--
+      Clean up the output from echo while keeping the above lines easy
+      to edit.
+    -->
+    <replaceregexp file="${reader.manifest}"
+                   flags="m"
+                   match="^\n"
+                   replace=""/>
+    <replaceregexp file="${reader.manifest}"
+                   flags="gm"
+                   byline="true"
+                   match="^\s+"
+                   replace=""/>
+  </target>
+
+  <target name="build"
+          depends="make-build-dirs,make-feeder-manifest,make-reader-manifest">
+
+    <!-- Build the rest-api war file. -->
+
+    <javac srcdir="${rest-api.src}" destdir="${rest-api.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <copy todir="${rest-api.lib}">
+      <fileset dir="${lib}"/>
+    </copy>
+    <jar basedir="${webdir}"
+         jarfile="${rest-api.war}"/>
+
+    <!-- Build the feeder. -->
+
+    <javac srcdir="${feeder.src}" destdir="${rest-api.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <jar basedir="${rest-api.classes}"
+         manifest="${feeder.manifest}"
+         jarfile="${feeder.jar}"/>
+
+    <!-- Build the reader. -->
+
+    <javac srcdir="${reader.src}" destdir="${rest-api.classes}">
+      <classpath refid="master-classpath"/>
+    </javac>
+    <jar basedir="${rest-api.classes}"
+         manifest="${reader.manifest}"
+         jarfile="${reader.jar}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${rest-api.classes}" quiet="true"/>
+    <delete dir="${rest-api.lib}" quiet="true"/>
+    <delete file="${rest-api.war}" quiet="true"/>
+
+    <delete file="${feeder.jar}" quiet="true"/>
+    <delete file="${feeder.manifest}" quiet="true"/>
+
+    <delete file="${reader.jar}" quiet="true"/>
+    <delete file="${reader.manifest}" quiet="true"/>
+
+    <delete quiet="true">
+      <fileset dir="." includes="**/*.class"/>
+    </delete>
+  </target>
+
+  <target name="rebuild" depends="clean,build"/>
+</project>
