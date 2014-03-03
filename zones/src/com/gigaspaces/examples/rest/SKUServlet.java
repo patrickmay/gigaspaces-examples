@@ -40,9 +40,6 @@ public final class SKUServlet extends HttpServlet
     if (space_ == null)
       space_ = (GigaSpace)getServletContext().getAttribute("remoteSpace");
 
-    logger_.info("SKUServlet.space():  " + space_.getName());
-    logger_.info("SKUServlet.space():  " + space_.getSpace().getFinderURL().toString());
-
     return space_;
     }
 
@@ -53,8 +50,6 @@ public final class SKUServlet extends HttpServlet
   private String skus(SKU template)
     {
     SKU skus[] = space().readMultiple(template);
-
-    logger_.info("SKUServlet.skus():  read " + skus.length + " skus.");
 
     String json = "{}";
     if ((skus != null) && skus.length > 0)
@@ -96,8 +91,6 @@ public final class SKUServlet extends HttpServlet
    */
   private String skus(String color,String size)
     {
-    logger_.info("SKUServlet.skus():  color = " + color + ", size = " + size);
-
     SKU template = new SKU();
     template.setColor(color);
     template.setSize(size);
@@ -121,9 +114,6 @@ public final class SKUServlet extends HttpServlet
     String json = new String("{ length : " + requestElements.length + " }");
 
     logger_.info("SKUServlet.doGet:  " + request.getRequestURI());
-    logger_.info("SKUServlet.doGet:  " + requestElements.length + " elements");
-    logger_.info("SKUServlet.doGet:  first element = " + requestElements[0]);
-    logger_.info("SKUServlet.doGet:  last element = " + requestElements[requestElements.length - 1]);
 
     if ((requestElements.length == 5)
         && "items-by-color".equals(requestElements[3]))

@@ -46,7 +46,7 @@
                       space="local-proxy"
                       tx-manager="transaction-manager"/>
 
-  <os-core:space id="remote-proxy" url="jini:/*/*/rest-api-space"/>
+  <os-core:space id="remote-proxy" url="jini://*/*/rest-api-space"/>
 
   <os-core:distributed-tx-manager id="remote-transaction-manager"/>
 
@@ -55,3 +55,4 @@
                       tx-manager="remote-transaction-manager"/>
 
 </beans>
+

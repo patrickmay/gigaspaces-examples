@@ -50,10 +50,18 @@ Available targets are:
     <mkdir dir="${rest-api.lib}"/>
   </target>
 
+  <!--
+      This target is necessary to allow fixed paths in the manifest file.
+  -->
   <target name="make-manifest">
+    <pathconvert property="manifest.classpath"
+                 refid="master-classpath"
+                 pathsep=" "
+                 dirsep="/"/>
+
     <echo file="${feeder.manifest}" append="false">
 Main-Class: ${feeder.fullname}
-Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${gshome}/lib/required/commons-logging-1.1.1.jar ${gshome}/lib/required/gs-openspaces.jar ${gshome}/lib/required/gs-runtime.jar ${gshome}/lib/required/spring-aop-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-asm-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-aspects-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-beans-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-support-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-core-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-expression-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-tx-3.1.3.RELEASE.jar
+Class-Path: ${manifest.classpath}
     </echo>
     <!--
       Clean up the output from echo while keeping the above lines easy

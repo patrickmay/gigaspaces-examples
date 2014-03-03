@@ -18,4 +18,5 @@ To run the example:
     5.  Deploy the example with bin/deploy.sh.
     6.  Run the feeder with bin/feed.sh.
     7.  Test the deployment by connecting to
-        http://localhost:8081/rest-api/v1/items/red/XL from your browser.
+        http://localhost:8081/rest-api/v1/items/Red/XL from your browser.
+
