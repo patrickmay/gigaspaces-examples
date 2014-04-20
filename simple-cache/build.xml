@@ -7,12 +7,12 @@
   <property environment="env"/>
   <property file="${basedir}/build.properties"/>
 
+  <property name="src" value="${basedir}/src"/>
+  <property name="classes" value="${basedir}/classes"/>
   <property name="lib" value="${basedir}/lib"/>
 
-  <property name="cacher.src" value="${basedir}/cacher"/>
-  <property name="cacher.classes" value="${basedir}/classes"/>
   <property name="cacher.fullname"
-            value="com.gigaspaces.examples.cache.cacher.Cacher"/>
+            value="com.gigaspaces.examples.cache.Cacher"/>
   <property name="cacher.manifest" value="${basedir}/cacher.manifest"/>
   <property name="cacher.jar" value="${lib}/cacher.jar"/>
 
@@ -39,14 +39,19 @@ Available targets are:
 
   <target name="make-build-dirs">
     <mkdir dir="${lib}"/>
-    <mkdir dir="${cacher.classes}"/>
+    <mkdir dir="${classes}"/>
     <mkdir dir="${build.deploy.base}"/>
   </target>
 
   <target name="make-manifest">
+    <pathconvert property="manifest.classpath"
+                 refid="master-classpath"
+                 pathsep=" "
+                 dirsep="/"/>
+
     <echo file="${cacher.manifest}" append="false">
 Main-Class: ${cacher.fullname}
-Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${gshome}/lib/required/commons-logging-1.1.1.jar ${gshome}/lib/required/gs-openspaces.jar ${gshome}/lib/required/gs-runtime.jar ${gshome}/lib/required/spring-aop-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-asm-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-aspects-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-beans-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-context-support-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-core-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-expression-3.1.3.RELEASE.jar ${gshome}/lib/required/spring-tx-3.1.3.RELEASE.jar
+Class-Path: ${manifest.classpath}
     </echo>
     <!--
       Clean up the output from echo while keeping the above lines easy
@@ -67,12 +72,12 @@ Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${
 
     <!-- Build the cacher. -->
 
-    <javac srcdir="${cacher.src}" destdir="${cacher.classes}">
+    <javac srcdir="${src}" destdir="${classes}">
       <classpath refid="master-classpath"/>
     </javac>
-    <copy file="${cacher.src}/Swag.gs.xml"
-          todir="${cacher.classes}/com/gigaspaces/examples/cache/cacher"/>
-    <jar basedir="${cacher.classes}"
+    <copy file="${src}/com/gigaspaces/examples/cache/Swag.gs.xml"
+          todir="${classes}/com/gigaspaces/examples/cache"/>
+    <jar basedir="${classes}"
          manifest="${cacher.manifest}"
          jarfile="${cacher.jar}"/>
 
@@ -81,7 +86,7 @@ Class-Path: ${gshome}/lib/required/com.springsource.org.aopalliance-1.0.0.jar ${
   <target name="clean">
     <delete dir="${build.deploy.base}" quiet="true"/>
     <delete dir="${lib}" quiet="true"/>
-    <delete dir="${cacher.classes}" quiet="true"/>
+    <delete dir="${classes}" quiet="true"/>
     <delete file="${cacher.manifest}" quiet="true"/>
 
     <delete quiet="true">

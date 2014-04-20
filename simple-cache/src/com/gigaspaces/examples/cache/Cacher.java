@@ -7,7 +7,7 @@
  * @version 1
  */
 
-package com.gigaspaces.examples.cache.cacher;
+package com.gigaspaces.examples.cache;
 
 import org.openspaces.core.GigaSpace;
 import org.openspaces.core.GigaSpaceConfigurer;

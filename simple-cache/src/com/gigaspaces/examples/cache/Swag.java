@@ -1,23 +1,13 @@
 /**
  * Swag is an object to put in a cache.
- * <br/>
- * This version of Swag.java shows the use of annotations instead of
- * the external Swag.gs.xml file.  The SpaceIndex annotation is
- * required only when there are other fields in the class that may be
- * searched on.
  *
  * @author Patrick May (patrick.may@mac.com)
  * @author &copy; 2013 Patrick May
  * @version 1
  */
 
-package com.gigaspaces.examples.cache.cacher;
+package com.gigaspaces.examples.cache;
 
-import com.gigaspaces.annotation.pojo.SpaceClass;
-import com.gigaspaces.annotation.pojo.SpaceId;
-import com.gigaspaces.annotation.pojo.SpaceIndex;
-
-@SpaceClass
 public class Swag
 {
   private Long id = null;
@@ -42,7 +32,6 @@ public class Swag
 
 
   // Accessor / mutator required by GigaSpaces
-  @SpaceId(autoGenerate = false)
   public Long getId() { return id; }
   public void setId(Long id) { this.id = new Long(id); }
 }  // end Swag
