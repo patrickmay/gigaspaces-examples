@@ -1,9 +1,10 @@
 #!/bin/bash
 
-# Feed Request objects into the template example space
+# Invoke the remote executor
 
 . `dirname $0`/gs-setup.sh
 
-java -jar `dirname $0`/../lib/caller.jar \
+java -cp ${REQUIRED_DIR}/*:`dirname $0`/../lib/caller.jar \
+     com.gigaspaces.examples.executor.client.Student \
      "jini://*/*/${EXAMPLE_SPACE_NAME}?groups=${LOOKUPGROUPS}"
 

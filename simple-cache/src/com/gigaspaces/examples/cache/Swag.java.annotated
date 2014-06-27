@@ -43,6 +43,7 @@ public class Swag
 
   // Accessor / mutator required by GigaSpaces
   @SpaceId(autoGenerate = false)
+  @SpaceRouting
   public Long getId() { return id; }
   public void setId(Long id) { this.id = new Long(id); }
 }  // end Swag

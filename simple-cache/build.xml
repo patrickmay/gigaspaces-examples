@@ -13,7 +13,6 @@
 
   <property name="cacher.fullname"
             value="com.gigaspaces.examples.cache.Cacher"/>
-  <property name="cacher.manifest" value="${basedir}/cacher.manifest"/>
   <property name="cacher.jar" value="${lib}/cacher.jar"/>
 
   <property name="build.deploy.base" value="${basedir}/deploy"/>
@@ -43,32 +42,7 @@ Available targets are:
     <mkdir dir="${build.deploy.base}"/>
   </target>
 
-  <target name="make-manifest">
-    <pathconvert property="manifest.classpath"
-                 refid="master-classpath"
-                 pathsep=" "
-                 dirsep="/"/>
-
-    <echo file="${cacher.manifest}" append="false">
-Main-Class: ${cacher.fullname}
-Class-Path: ${manifest.classpath}
-    </echo>
-    <!--
-      Clean up the output from echo while keeping the above lines easy
-      to edit.
-    -->
-    <replaceregexp file="${cacher.manifest}"
-                   flags="m"
-                   match="^\n"
-                   replace=""/>
-    <replaceregexp file="${cacher.manifest}"
-                   flags="gm"
-                   byline="true"
-                   match="^\s+"
-                   replace=""/>
-  </target>
-
-  <target name="build" depends="make-build-dirs,make-manifest">
+  <target name="build" depends="make-build-dirs">
 
     <!-- Build the cacher. -->
 
@@ -78,7 +52,6 @@ Class-Path: ${manifest.classpath}
     <copy file="${src}/com/gigaspaces/examples/cache/Swag.gs.xml"
           todir="${classes}/com/gigaspaces/examples/cache"/>
     <jar basedir="${classes}"
-         manifest="${cacher.manifest}"
          jarfile="${cacher.jar}"/>
 
   </target>
@@ -87,7 +60,6 @@ Class-Path: ${manifest.classpath}
     <delete dir="${build.deploy.base}" quiet="true"/>
     <delete dir="${lib}" quiet="true"/>
     <delete dir="${classes}" quiet="true"/>
-    <delete file="${cacher.manifest}" quiet="true"/>
 
     <delete quiet="true">
       <fileset dir="." includes="**/*.class"/>
